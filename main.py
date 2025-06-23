@@ -44,4 +44,8 @@ for sender, message in st.session_state.chat:
     if sender == "You":
         st.markdown(
             f"<div style='background:#e0f7fa;padding:10px;border-radius:10px;margin-bottom:5px;text-align:right;color:black'><b>🧍 {sender}:</b> {message}</div>",
+            unsafe_allow_html=true)
+
+st.markdown("---")
+st.caption("Made with 💙 by Dafiq ")
 
