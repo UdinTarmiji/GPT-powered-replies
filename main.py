@@ -8,7 +8,7 @@ st.title("🤖 Mood & Motivation Chatbot (GPT-Powered)")
 st.write("Talk to me! I’ll respond like a smart friend using GPT 💬")
 
 # --- Load API Key from secrets.toml ---
-openai.api_key = st.secrets["OPENAI_API_KEY"]
+openai.api_key = st.secrets["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"]
 
 # --- GPT Response Function ---
 def ask_gpt(message):
