@@ -8,14 +8,15 @@ st.title("🤖 Mood & Motivation Chatbot (GPT-Powered)")
 st.write("Talk to me! I’ll respond like a smart friend using GPT 💬")
 
 # --- Load API Key from secrets.toml ---
-openai.api_key = st.secrets["OPENAI_API_KEY"]
+from openai import OpenAI
 
-# --- GPT Response Function ---
+client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+
 def ask_gpt(message):
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",  # use "gpt-4" if you have access
+    response = client.chat.completions.create(
+        model="gpt-3.5-turbo",
         messages=[
-            {"role": "system", "content": "You are a friendly chatbot that gives helpful, kind, and motivational replies."},
+            {"role": "system", "content": "You are a friendly chatbot that gives helpful, motivational replies."},
             {"role": "user", "content": message}
         ]
     )
