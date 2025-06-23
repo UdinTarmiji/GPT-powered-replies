@@ -9,6 +9,7 @@ st.write("Talk to me! I’ll respond like a smart friend using GPT 💬")
 
 # --- Load API Key from secrets.toml ---
 api_key = st.secrets.get("OPENAI_API_KEY")
+st.write("API Key Loaded:", bool(api_key))
 if not api_key:
     st.error("OPENAI_API_KEY not found in secrets.toml!")
     st.stop()
