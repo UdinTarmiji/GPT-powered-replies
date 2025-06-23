@@ -1,5 +1,6 @@
 import streamlit as st
-import openai
+from openai import OpenAI
+import os
 
 # --- Set up Streamlit page ---
 st.set_page_config(page_title="Mood Chatbot", page_icon="🧠")
@@ -8,12 +9,9 @@ st.title("🤖 Mood & Motivation Chatbot (GPT-Powered)")
 st.write("Talk to me! I’ll respond like a smart friend using GPT 💬")
 
 # --- Load API Key from secrets.toml ---
-openai.api_key = st.secrets["OPENAI_API_KEY"]
-
+api_key = st.secrets["OPENAI_API_KEY"]
+client = OpenAI(api_key=api_key)
 # --- GPT Response Function ---
-from openai import OpenAI
-
-client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
 def ask_gpt(message):
     response = client.chat.completions.create(
@@ -31,14 +29,22 @@ if "chat" not in st.session_state:
     st.session_state.chat = []
 
 # --- User input ---
-user_input = st.text_input("💬 Type your message:")
+user_input = st.text_input("Type your message here:")
 
-if st.button("Send"):
-    if user_input.strip() == "":
-        st.warning("Please type something.")
-    else:
-        # Get GPT reply
-        gpt_reply = ask_gpt(user_input)
+if st.button("Ask") and user_input:
+    with st.spinner("GPT is thinking..."):
+        try:
+            response = client.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                    {"role": "system", "content": "You are a helpful assistant."},
+                    {"role": "user", "content": user_input}
+                ]
+            )
+            gpt_reply = response.choices[0].message.content
+            st.markdown(f"**GPT:** {gpt_reply}")
+        except Exception as e:
+            st.error(f"Error: {e}")
 
         # Save to chat history
         st.session_state.chat.append(("You", user_input))
